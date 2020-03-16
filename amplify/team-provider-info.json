@@ -1,0 +1,20 @@
+{
+    "mbp": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-unicornflix-mbp-155409-authRole",
+            "UnauthRoleArn": "arn:aws:iam::072060221753:role/amplify-unicornflix-mbp-155409-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::072060221753:role/amplify-unicornflix-mbp-155409-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "amplify-unicornflix-mbp-155409-deployment",
+            "UnauthRoleName": "amplify-unicornflix-mbp-155409-unauthRole",
+            "StackName": "amplify-unicornflix-mbp-155409",
+            "StackId": "arn:aws:cloudformation:us-west-2:072060221753:stack/amplify-unicornflix-mbp-155409/36b40fd0-6692-11ea-8771-0aa1ce010932",
+            "AmplifyAppId": "d2f64gsfil6xgx"
+        },
+        "categories": {
+            "auth": {
+                "unicornflix1ef1fa6f": {}
+            }
+        }
+    }
+}

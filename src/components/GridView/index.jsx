@@ -8,10 +8,14 @@ import VideoPlayer from '../VideoPlayer';
 import GridCardView from '../GridCardView';
 import 'video.js/dist/video-js.css';
 // Insert Location 9
+import Amplify, { API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../../graphql/queries';
 
 // Insert Location 12
+import awsvideo from '../../aws-video-exports';
 
 // Insert Location 14
+import { onCreateVodAsset } from '../../graphql/subscriptions';
 
 
 class GridView extends Component {
@@ -30,8 +34,15 @@ class GridView extends Component {
 
   async componentDidMount() {
     // Insert Location 10
+const assets = await API.graphql(graphqlOperation(queries.listVodAssets));
+let { nextToken } = assets.data.listVodAssets;
+if (nextToken === undefined) {
+  nextToken = '';
+}
+this.setState({ items: assets.data.listVodAssets.items, nextToken });
 
     // Insert Location 16
+    this.listenForNewAssets();
 
   }
 
@@ -43,7 +54,15 @@ class GridView extends Component {
 
   displayMovie = (item) => {
     // Insert Location 13
-
+    const region = Amplify._config.aws_project_region;
+this.setState({
+  sources: [{
+      src: `https://${awsvideo.awsCloudFront}/fouls/${item.video.id}/index.m3u8`,
+      type: 'application/x-mpegURL',
+    }],
+  displayingMovie: true,
+  choosenItem: item,
+});
   }
 
   overlayMovie = () => {
@@ -68,12 +87,33 @@ class GridView extends Component {
 
   listenForNewAssets = () => {
     // Insert Location 15
+    API.graphql(
+  graphqlOperation(onCreateVodAsset),
+).subscribe({
+  next: (((data) => {
+    const { items } = this.state;
+    items.push(data.value.data.onCreateVodAsset);
+    this.setState({
+      items,
+    });
+  })),
+});
 
   }
 
   async handleOnDocumentBottom() {
     // Insert Location 11
-
+    const { nextToken, items } = this.state;
+if (nextToken !== '' && nextToken !== null && nextToken !== undefined) {
+  console.log(nextToken);
+  const assets = await API.graphql(graphqlOperation(queries.listVodAssets, { nextToken }));
+  const newItems = items.concat(assets.data.listVodAssets.items);
+  let newNextToken = assets.data.listVodAssets.nextToken;
+  if (newNextToken === undefined) {
+    newNextToken = '';
+  }
+  this.setState({ items: newItems, nextToken: newNextToken });
+}
   }
 
   render() {
