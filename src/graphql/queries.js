@@ -15,11 +15,19 @@ export const getVodAsset = /* GraphQL */ `
 `;
 export const listVodAssets = /* GraphQL */ `
   query ListVodAssets(
+    $id: ID
     $filter: ModelvodAssetFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listVodAssets(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listVodAssets(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
         title

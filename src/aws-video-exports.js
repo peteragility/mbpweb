@@ -2,8 +2,7 @@
 
 const awsvideoconfig = {
     "awsInputVideo": "unicornflix-mbp-input-rdyo3ns5",
-    "awsOutputVideo": "unicornflix-mbp-output-rdyo3ns5.s3.us-west-2.amazonaws.com",
-    "awsCloudFront": "d3tqj2t8hpft5t.cloudfront.net"
+    "awsOutputVideo": "unicornflix-mbp-output-rdyo3ns5.s3.us-west-2.amazonaws.com"
 };
 
 export default awsvideoconfig;

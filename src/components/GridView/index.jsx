@@ -33,16 +33,30 @@ class GridView extends Component {
   }
 
   async componentDidMount() {
-    // Insert Location 10
-const assets = await API.graphql(graphqlOperation(queries.listVodAssets));
-let { nextToken } = assets.data.listVodAssets;
-if (nextToken === undefined) {
-  nextToken = '';
-}
-this.setState({ items: assets.data.listVodAssets.items, nextToken });
 
-    // Insert Location 16
-    this.listenForNewAssets();
+      // Insert Location 10
+      const assets = await API.graphql(graphqlOperation(queries.listVodAssets));
+      let { nextToken } = assets.data.listVodAssets;
+      if (nextToken === undefined) {
+        nextToken = '';
+      }
+      this.setState({ items: assets.data.listVodAssets.items, nextToken });
+
+      // Insert Location 16
+      this.listenForNewAssets();
+
+      // keep refresh the page for new records every 5 seconds
+      setInterval(async() => {
+
+        // Insert Location 10
+        const assets = await API.graphql(graphqlOperation(queries.listVodAssets));
+        let { nextToken } = assets.data.listVodAssets;
+        if (nextToken === undefined) {
+          nextToken = '';
+        }
+        this.setState({ items: assets.data.listVodAssets.items, nextToken });
+
+      }, 5000);
 
   }
 
@@ -57,7 +71,7 @@ this.setState({ items: assets.data.listVodAssets.items, nextToken });
     const region = Amplify._config.aws_project_region;
 this.setState({
   sources: [{
-      src: `https://${awsvideo.awsCloudFront}/fouls/${item.video.id}/index.m3u8`,
+      src: `https://d3tqj2t8hpft5t.cloudfront.net/fouls/${item.video.id}/index.m3u8`,
       type: 'application/x-mpegURL',
     }],
   displayingMovie: true,
